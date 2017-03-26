@@ -11,10 +11,10 @@ var mysqlSettings = {
 exports.register = function (username, email, password, callback) {
     var connection = mysql.createConnection(mysqlSettings);
     connection.connect();
-    connection.query("SELECT * FROM `users` WHERE username='" + username + "'", function (err, rows, fields) {
+    connection.query("SELECT * FROM `users` WHERE username=" + connection.escape(username) + "", function (err, rows, fields) {
         if (!err) {
             if (rows == 0) {
-                connection.query("INSERT into `users` (username, password, email) VALUES ('" + username + "', '" + password + "', '" + email + "')", function (err, rows, fields) {
+                connection.query("INSERT into `users` (username, password, email) VALUES (" + connection.escape(username) + ", " + connection.escape(password) + ", " + connection.escape(email) + ")", function (err, rows, fields) {
                     if (!err) {
                         connection.end();
                         callback(true);
@@ -39,7 +39,7 @@ exports.register = function (username, email, password, callback) {
 exports.login = function (username, password, callback) {
     var connection = mysql.createConnection(mysqlSettings);
     connection.connect();
-    connection.query("SELECT * FROM `users` WHERE username='" + username + "' and password='" + password + "'", function (err, rows, fields) {
+    connection.query("SELECT * FROM `users` WHERE username=" + connection.escape(username) + " and password=" + connection.escape(password), function (err, rows, fields) {
         if (!err) {
             //If password is correct...
             if (rows.length > 0) {
