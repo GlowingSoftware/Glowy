@@ -1,4 +1,10 @@
 {
     "ip": 123,
-    "enableRegister": false
+    "enableRegister": false,
+    "mysql": {
+        "host": "",
+        "user": "",
+        "password": "",
+        "database": ""
+    }
 }

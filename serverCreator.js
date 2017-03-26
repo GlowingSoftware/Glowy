@@ -14,10 +14,10 @@ var startQueue = {};
 serv.listen(8081);
 console.log("Servercreator initialized");
 var mysqlSettings = {
-    host: 'sql8.freemysqlhosting.net',
-    user: 'sql8164855',
-    password: 'vIaX9H4bp8',
-    database: 'sql8164855'
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
 }
 
 var connection = mysql.createConnection(mysqlSettings);

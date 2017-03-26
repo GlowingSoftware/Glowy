@@ -1,9 +1,11 @@
+var configReader = require('./configReader')
 var mysql = require('mysql');
+var config = configReader.readConfig();
 var mysqlSettings = {
-    host: 'sql8.freemysqlhosting.net',
-    user: 'sql8164855',
-    password: 'vIaX9H4bp8',
-    database: 'sql8164855'
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
 }
 
 exports.register = function (username, email, password, callback) {
