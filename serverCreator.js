@@ -10,6 +10,7 @@ var configReader = require('./configReader')
 var userManager = require('./userManager')
 //var db = require('./db.js');
 var startQueue = {};
+var config = configReader.readConfig();
 
 serv.listen(8081);
 console.log("Servercreator initialized");
