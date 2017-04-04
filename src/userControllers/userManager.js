@@ -1,4 +1,4 @@
-var configReader = require('./configReader')
+var configReader = require('../../configReader')
 var mysql = require('mysql');
 var config = configReader.readConfig();
 var mysqlSettings = {

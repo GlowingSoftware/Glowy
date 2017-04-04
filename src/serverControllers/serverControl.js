@@ -1,7 +1,7 @@
 console.log("Starting...");
 var path = require('path');
 var proc = require('child_process');
-var configReader = require('./configReader')
+var configReader = require('../../configReader')
 var filePathINI = path.join(__dirname, 'ini.json');
 var filePathOFF = path.join(__dirname, 'stop.json');
 var fs = require('fs');
@@ -32,7 +32,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('startServer', function (name) {
         var no = map.get(name);
         if (no == null) {
-            var poth = path.join(__dirname, '/servers/' + name + "/");
+            var poth = configReader.rootPath + '/servers/' + name + "/";
             console.log("Starting server of " + name);
             var mc_server2 = proc.exec("java -Xmx300M -Xms300M -Dcom.mojang.eula.agree=true -jar " + poth +  "server.jar", {cwd: poth },  (error, stdout, stderr) => {
                 if (error) {
