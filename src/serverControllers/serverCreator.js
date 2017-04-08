@@ -105,20 +105,17 @@ function createServer(username) {
                             fs.mkdirSync(dir);
                             //Copying all the files to the user server folder
                             var serverFolder = path.join(configReader.rootPath() + '/servers/' + username);
-                            copy.one(configReader.rootPath() + '/serverVersions/server.jar', serverFolder, function (err, file) {
-                            });
-                            copy.one(configReader.rootPath() + '/server.properties', serverFolder, function (err, file) {
-                            });
-                            copy.one(configReader.rootPath() + '/servers/serverInfo.json', serverFolder, function (err, file) {
-                            });
-                            //Delete the generated server.properties
-                            fs.rename(configReader.rootPath() + '/serverVersions/server.jar', configReader.rootPath() + '/server.jar', function () {
-                                console.log("trying to move the file)")
-                                fs.rename(configReader.rootPath() + '/servers/serverInfo.json', configReader.rootPath() + '/serverInfo.json', function () {
-                                    console.log("trying to move the file)")
+                            var copyServer = fs.createReadStream(configReader.rootPath() + '/serverVersions/server.jar').pipe(fs.createWriteStream(serverFolder + '/server.jar'));
+                            copyServer.on('finish', function () {
+                                var copyProperties = fs.createReadStream(configReader.rootPath() + '/server.properties').pipe(fs.createWriteStream(serverFolder + '/server.properties'));
+                                copyProperties.on('finish', function () {
+                                    var copyInfo = fs.createReadStream(configReader.rootPath() + '/servers/serverInfo.json').pipe(fs.createWriteStream(serverFolder + '/serverInfo.json'));
+                                    copyInfo.on('finish', function () {
+                                        fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                                    })
                                 });
-                            })
-                            fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                            });
+
                         }
                     });
                 })
@@ -166,21 +163,22 @@ function createServer(username) {
                         fs.mkdirSync(dir);
                         //Copying all the files to the user server folder
                         var serverFolder = path.join(configReader.rootPath() + '/servers/' + username);
-                        copy.one(configReader.rootPath() + '/serverVersions/server.jar', serverFolder, function (err, file) {
+                        /*copy.one(configReader.rootPath() + '/serverVersions/server.jar', serverFolder, function (err, file) {
                         });
                         copy.one(configReader.rootPath() + '/server.properties', serverFolder, function (err, file) {
                         });
                         copy.one(configReader.rootPath() + '/servers/serverInfo.json', serverFolder, function (err, file) {
-                        });
-                        //Delete the generated server.properties
-                        fs.rename(configReader.rootPath() + '/serverVersions/server.jar', configReader.rootPath() + '/server.jar', function (err) {
-                            if (err) throw err;
-                            console.log("trying to move the file)")
-                            fs.rename(configReader.rootPath() + '/servers/serverInfo.json', configReader.rootPath() + '/serverInfo.json', function (rr) {
-                                console.log("trying to move the file)")
+                        });*/
+                        var copyServer = fs.createReadStream(configReader.rootPath() + '/serverVersions/server.jar').pipe(fs.createWriteStream(serverFolder + '/server.jar'));
+                        copyServer.on('finish', function () {
+                            var copyProperties = fs.createReadStream(configReader.rootPath() + '/server.properties').pipe(fs.createWriteStream(serverFolder + '/server.properties'));
+                            copyProperties.on('finish', function () {
+                                var copyInfo = fs.createReadStream(configReader.rootPath() + '/servers/serverInfo.json').pipe(fs.createWriteStream(serverFolder + '/serverInfo.json'));
+                                copyInfo.on('finish', function () {
+                                    fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                                })
                             });
-                        })
-                        fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                        });
                     }
                 });
             })
