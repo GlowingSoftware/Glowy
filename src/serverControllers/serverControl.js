@@ -22,37 +22,39 @@ console.log("Server initialized");
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     socket.on('status', function (name) {
-        var no = map.get(name);
-        if (no != null) {
+        var server = map.get(name);
+        if (server != null) {
             socket.emit("statusON"); //server status ON
         } else {
             socket.emit("statusOFF"); //server status OFF
         }
     });
     socket.on('startServer', function (name) {
-        var no = map.get(name);
-        if (no == null) {
+        var server = map.get(name);
+        if (server == null) {
             var poth = configReader.rootPath + '/servers/' + name;
             console.log("Starting server of " + name);
             var mc_server2 = exec('"java" -Xmx256M -Xms256M -Dcom.mojang.eula.agree=true -jar server.jar', { cwd: path.resolve(process.cwd() + "/servers/" + name) }, function(err, stdout, stderr) {
                 if(err){ console.log(err); socket.emit("statusOFF"); return; }   
-                map.set(name, mc_server2);
-                socket.emit("statusON"); //status on
             });
+            map.set(name, mc_server2);
+            socket.emit("statusON"); //status on
         }
     });
     socket.on('command', function (name, cmd) {
-        var no = map.get(name);
-        if (no != null) {
-            if (cmd == "stop") { //this is not the most efficient way but...
-                no.stdin.write("stop\r");
+        var server = map.get(name);
+        console.log("packet received")
+        if (server != null) {
+            if (cmd == "stop") { //this is not the most efficient way but it works...
+                server.stdin.write("stop\r");
                 map.remove(name);
                 socket.emit("statusOFF");
                 console.log("Closing server of " + name);
             } else {
+                console.log("else")
                 if (cmd != null) {
                     console.log("In the server of " + name + " this command was executed: " + cmd);
-                    no.stdin.write(cmd + "\r");
+                    server.stdin.write(cmd + "\r");
                 }
             }
         }
@@ -63,8 +65,8 @@ io.sockets.on('connection', function (socket) {
     })
     socket.on('stopServer', function (name) {
         //Hashmap saves the variable name and the username
-        var no = map.get(name);
-        if (no != null) {
+        var server = map.get(name);
+        if (server != null) {
             var lelo = map.get(name);
             lelo.stdin.write("stop\r");
             map.remove(name);
