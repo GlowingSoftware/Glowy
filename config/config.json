@@ -3,9 +3,9 @@
     "config": "",
     "enableRegister": true,
     "mysql": {
-        "host": "sql8.freemysqlhosting.net",
-        "user": "sql8165991",
-        "password": "BvNjJYPHFn",
-        "database": "sql8165991"
+        "host": "localhost",
+        "user": "root",
+        "password": "password",
+        "database": "projects"
     }
 }
