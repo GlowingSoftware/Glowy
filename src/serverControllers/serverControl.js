@@ -1,6 +1,6 @@
 console.log("Starting...");
 var path = require('path');
-var proc = require('child_process');
+var exec = require('child_process').exec;
 var configReader = require('../../configReader')
 var filePathINI = path.join(__dirname, 'ini.json');
 var filePathOFF = path.join(__dirname, 'stop.json');
@@ -34,15 +34,13 @@ io.sockets.on('connection', function (socket) {
         if (no == null) {
             var poth = configReader.rootPath + '/servers/' + name;
             console.log("Starting server of " + name);
-            var mc_server2 = proc.spawn("java", ['-Xmx300M', '-Xms300M', '-Dcom.mojang.eula.agree=true', '-jar', (poth + '/server.jar'), 'nogui']);
-            map.set(name, mc_server2);
-            socket.emit("statusON"); //status on
-            mc_server2.on('exit', function() {
-                socket.emit("statusOFF"); //status off
-                map.remove(name);
+            var mc_server2 = exec('"java" -Xmx256M -Xms256M -Dcom.mojang.eula.agree=true -jar server.jar', { cwd: path.resolve(process.cwd() + "/servers/" + name) }, function(err, stdout, stderr) {
+                if(err){ console.log(err); socket.emit("statusOFF"); return; }   
+                map.set(name, mc_server2);
+                socket.emit("statusON"); //status on
             });
         }
-    })
+    });
     socket.on('command', function (name, cmd) {
         var no = map.get(name);
         if (no != null) {
