@@ -34,13 +34,13 @@ io.sockets.on('connection', function (socket) {
         if (no == null) {
             var poth = configReader.rootPath + '/servers/' + name;
             console.log("Starting server of " + name);
-            var mc_server2 = proc.spawn("java", ['-Xmx300M', '-Xms300M', '-Dcom.mojang.eula.agree=true', '-jar', 'server.jar'], { cwd: poth });
-            mc_server2.on('exit', function () {
+            var mc_server2 = proc.spawn("java", ['-Xmx300M', '-Xms300M', '-Dcom.mojang.eula.agree=true', '-jar', (poth + '/server.jar'), 'nogui']);
+            map.set(name, mc_server2);
+            socket.emit("statusON"); //status on
+            mc_server2.on('exit', function() {
                 socket.emit("statusOFF"); //status off
                 map.remove(name);
             });
-            map.set(name, mc_server2);
-            socket.emit("statusON"); //status on
         }
     })
     socket.on('command', function (name, cmd) {
