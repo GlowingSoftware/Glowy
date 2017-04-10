@@ -10,7 +10,8 @@
     "jsonfile": "^2.4.0",
     "mysql": "^2.13.0",
     "socketio": "^1.0.0",
-    "hashmap":"^2.0.6"
+    "hashmap":"^2.0.6",
+    "socket.io":"^1.7.3"
   },
   "devDependencies": {},
   "scripts": {

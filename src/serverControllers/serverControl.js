@@ -32,9 +32,9 @@ io.sockets.on('connection', function (socket) {
     socket.on('startServer', function (name) {
         var no = map.get(name);
         if (no == null) {
-            var poth = configReader.rootPath + '/servers/' + name + "/";
+            var poth = configReader.rootPath + '/servers/' + name;
             console.log("Starting server of " + name);
-            var mc_server2 = proc.exec("java -Xmx300M -Xms300M -Dcom.mojang.eula.agree=true -jar " + poth +  "server.jar", {cwd: poth },  (error, stdout, stderr) => {
+            var mc_server2 = proc.exec("java", ["-Xmx300M", "-Xms300M", "-Dcom.mojang.eula.agree=true", "-jar ", "server.jar"], {cwd: poth }, function(error, stdout, stderr) {
                 if (error) {
                     console.log("The server of " + name + " was closed because: " + error)
                     socket.emit("statusOFF"); //status off
