@@ -99,7 +99,7 @@
 				window.location.href = 'login';
 			}
 		}
-		checkCookie()
+		checkCookie();
 
 		var timeQueue = 360000; //6 minutos
 		window.onbeforeunload = function () {
@@ -110,7 +110,7 @@
 		};
 
 		var cookieName = document.cookie;
-		var name = cookieName.slice(9);
+		var name = getCookie("username");
 		document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
 		var socket = io();
 		this.socket = io.connect('http://localhost:8080');

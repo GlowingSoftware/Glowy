@@ -34,17 +34,10 @@ io.sockets.on('connection', function (socket) {
         if (no == null) {
             var poth = configReader.rootPath + '/servers/' + name;
             console.log("Starting server of " + name);
-            var mc_server2 = proc.exec("java", ["-Xmx300M", "-Xms300M", "-Dcom.mojang.eula.agree=true", "-jar ", "server.jar"], {cwd: poth }, function(error, stdout, stderr) {
-                if (error) {
-                    console.log("The server of " + name + " was closed because: " + error)
-                    socket.emit("statusOFF"); //status off
-                    map.remove(name);
-                    return;
-                }
-                if (stdout) {
-                    socket.emit("statusOFF"); //status off
-                    map.remove(name);
-                }
+            var mc_server2 = proc.spawn("java", ['-Xmx300M', '-Xms300M', '-Dcom.mojang.eula.agree=true', '-jar', 'server.jar'], { cwd: poth });
+            mc_server2.on('exit', function () {
+                socket.emit("statusOFF"); //status off
+                map.remove(name);
             });
             map.set(name, mc_server2);
             socket.emit("statusON"); //status on
