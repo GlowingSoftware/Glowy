@@ -1,6 +1,7 @@
 node_modules
 servers
 serverInfo.json
+*.json
 
 *.class
 

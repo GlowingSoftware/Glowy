@@ -7,24 +7,18 @@ var serv = require('http').createServer(app);
 
 //Initializing all the modules
 //var servercreation = require('./servercreation');
-var servercreator = require('./servercreator');
-var servercontrol = require('./servercontrol');
+var servercreator = require('./src/serverControllers/servercreator');
+var servercontrol = require('./src/serverControllers/servercontrol');
 //var plugins = require('./plugins');
 
-// Ficheros estaticos en localhost/...
 app.use(express.static('public'));
-// Definimos sistema de plantillas
 app.set('view engine', 'ejs');
-// Metodos Gets
-// Index
 app.get('/', function(req,res){
     res.render('index');
 });
-// Registro
 app.get('/register', function(req,res){
     res.render('register');
 });
-// Login
 app.get('/login', function(req,res){
     res.render('login');
 });
@@ -34,5 +28,5 @@ app.get('/server', function(req,res){
 app.get('/logout', function(req,res){
     res.render('logout');
 });
-// Puerto 
+// Port
 app.listen(port);

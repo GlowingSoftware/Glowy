@@ -1,0 +1,11 @@
+{
+    "ip": "127.0.0.1",
+    "config": "",
+    "enableRegister": true,
+    "mysql": {
+        "host": "localhost",
+        "user": "root",
+        "password": "password",
+        "database": "projects"
+    }
+}
