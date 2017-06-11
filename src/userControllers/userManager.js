@@ -1,4 +1,5 @@
 var configReader = require('../../configReader')
+var sjcl = require('./sjcl.js')
 var mysql = require('mysql');
 var config = configReader.readConfig();
 var mysqlSettings = {
@@ -8,7 +9,9 @@ var mysqlSettings = {
     database: config.mysql.database
 }
 
-exports.register = function (username, email, password, callback) {
+exports.register = function (usernameEncrypted, email, passwordEncrypted, callback) {
+    var username = sjcl.decrypt("username", usernameEncrypted);
+    var password = sjcl.decrypt("password", passwordEncrypted);
     var connection = mysql.createConnection(mysqlSettings);
     connection.connect();
     connection.query("SELECT * FROM `users` WHERE username=" + connection.escape(username) + "", function (err, rows, fields) {
@@ -36,7 +39,9 @@ exports.register = function (username, email, password, callback) {
         }
     });
 }
-exports.login = function (username, password, callback) {
+exports.login = function (usernameEncrypted, passwordEncrypted, callback) {
+    var username = sjcl.decrypt("username", usernameEncrypted);
+    var password = sjcl.decrypt("password", passwordEncrypted);
     var connection = mysql.createConnection(mysqlSettings);
     connection.connect();
     connection.query("SELECT * FROM `users` WHERE username=" + connection.escape(username) + " and password=" + connection.escape(password), function (err, rows, fields) {
