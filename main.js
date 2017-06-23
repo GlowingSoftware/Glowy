@@ -1,14 +1,19 @@
 // All the things we'll use
 var express = require('express');
 var app = express();
-var ejs = require('ejs');
 var port = 80;
 var serv = require('http').createServer(app);
+/*const SimpleNodeLogger = require('simple-node-logger'),
+	opts = {
+		logFilePath:'log.log',
+		timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+	},
+	log = SimpleNodeLogger.createSimpleLogger( opts );*/
 
 //Initializing all the modules
 //var servercreation = require('./servercreation');
-var servercreator = require('./src/serverControllers/servercreator');
-var servercontrol = require('./src/serverControllers/servercontrol');
+var servercreator = require('./src/serverControllers/serverCreator.js');
+var servercontrol = require('./src/serverControllers/serverControl.js');
 //var plugins = require('./plugins');
 
 app.use(express.static('public'));
