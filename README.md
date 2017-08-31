@@ -24,4 +24,4 @@ This project is in Github. You can edit it anytime
 ## How do I get my idea out on here?
 well you can msg me on this or skype/discord.
 - skype: xcrafter245
-- discord: https://discord.gg/a54eZMg (find a gay name 『 ᔕᓏᘢᒷ 』)
+- discord: https://discord.gg/a54eZMg (find a guy name 『 ᔕᓏᘢᒷ 』)
