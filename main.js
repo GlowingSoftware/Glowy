@@ -1,7 +1,8 @@
 // All the things we'll use
 var express = require('express');
+var configReader = require('configReader')
 var app = express();
-var port = 80;
+var port = configReader.port;
 var serv = require('http').createServer(app);
 /*const SimpleNodeLogger = require('simple-node-logger'),
 	opts = {
