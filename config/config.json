@@ -2,6 +2,7 @@
     "ip": "127.0.0.1",
     "config": "",
     "enableRegister": true,
+    "port": "8040",
     "mysql": {
         "host": "localhost",
         "user": "root",
