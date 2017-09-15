@@ -2,12 +2,14 @@
 thanks to Deudly for the open-source https://github.com/GlowstoneHosting/Glowstone
 This is a free Minecraft Server Hosting Control Panel. hey you ya you, don't want to buy Multicraft? want something easy well to bad XD.
 ## IDEAS
-- adding different versions of minecraft server like spigot and vanilla Minecraft and others. (all most done, 5/8 done) <--- thare a lot to do on this one
-- changing the demo webpaga. (not yet started)
-- adding in different ram for each server. (1/3 of it being complete)
-- change the port system. (not yet start but have an idea how)
-- building as a window application. (not yet started)
-- set where every account can have more servers. (not yet started)
+- adding different versions of minecraft server like spigot and vanilla Minecraft and others. (all most done, 6/8 done) <--- thare a lot to do on this one
+- outputing info about/server info to html. (working on it 2/3 done)
+- changing the demo webpaga. (all most done)
+- change the port system. (started on this)
+- subserver so other pc can setupserver and host it/do the heavy lifting. (have an idea on how to set it up)
+- set where every account can have more servers. (5/8 done)
+## NEW FEATURES 
+- now you can setting the ram for each server
 
 ## FEATURES
 - Free, open-source. idk about continually updated
