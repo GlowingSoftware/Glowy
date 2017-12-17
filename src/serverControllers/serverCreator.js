@@ -8,12 +8,12 @@ var serv = require('http').createServer(app);
 var mysql = require('mysql');
 var configReader = require('../../configReader')
 var userManager = require('../userControllers/userManager')
-var serversetting = require('../fileBuilders/server_setting')
+//var db = require('./db.js');
 var startQueue = {};
 var config = configReader.readConfig();
 
-serv.listen(8083);
-console.log("???");
+serv.listen(8081);
+console.log("Servercreator initialized");
 var mysqlSettings = {
     host: config.mysql.host,
     user: config.mysql.user,
@@ -34,13 +34,11 @@ connection.end();
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
-    socket.on('register', function (username, email, password, serverId) {
+    socket.on('register', function (username, email, password) {
         userManager.register(username, email, password, function (allFine) {
             if (allFine == true) {
                 socket.emit("register", true)
-				//here we need to call a new dir to be build for the new acc.
-				//we need to look if this acc can edit the amout of servers it has and ram for each one.
-                //createServer(username, serverId) <---- this is being move to ServerSetupCreator.js
+                createServer(username)
             } else {
                 socket.emit("register", false)
             }
@@ -60,18 +58,130 @@ io.sockets.on('connection', function (socket) {
         socket.emit('isRegisterOpened', config.enableRegister)
     });
 });
-function createServer(username, server_Id) {
+function createServer(username) {
     if (!fs.existsSync(configReader.rootPath() + "/servers/serverInfo.json")) {
-		var server_ver = 'server1112';
-		var setram = 256;
-		serversetting.createServerInfo();
-		serversetting.createproperties(username, server_Id, setram, server_ver);
-		serversetting.createserver(username, server_Id, server_ver, true); //(username, server_Id, server_ver)
-		
+        var serverInfoComplete = {
+            port: 25590
+        }
+        jf.writeFile(configReader.rootPath() + "/servers/serverInfo.json", serverInfoComplete, function (err) {
+            var serverInfoFile = configReader.rootPath() + '/servers/serverInfo.json'
+            jf.readFile(serverInfoFile, function (err, currentServerInfo) {
+                var serverInfo = currentServerInfo;
+                var port = serverInfo.port;
+                serverInfo.port = port + 1;
+                jf.writeFile(serverInfoFile, serverInfo, function (err) {
+                    var properties = "#Minecraft server properties \n" +
+                        "#Thu Mar 23 20:49:11 CET 2017 \n" +
+                        "generator-settings= \n" +
+                        "force-gamemode=false \n" +
+                        "allow-nether=true \n" +
+                        "gamemode=0 \n" +
+                        "enable-query=false \n" +
+                        "player-idle-timeout=0 \n" +
+                        "difficulty=1 \n" +
+                        "spawn-monsters=true \n" +
+                        "op-permission-level=4 \n" +
+                        "announce-player-achievements=true \n" +
+                        "pvp=true \n" +
+                        "snooper-enabled=true \n" +
+                        "level-type=DEFAULT \n" +
+                        "hardcore=false \n" +
+                        "enable-command-block=false \n" +
+                        "max-players=20 \n" +
+                        "network-compression-threshold=256 \n" +
+                        "resource-pack-sha1= \n" +
+                        "max-world-size=29999984 \n" +
+                        'server-port=' + port + "\n" +
+                        "debug=false \n" +
+                        "server-ip= \n" +
+                        "spawn-npcs=true";
+
+                    fs.writeFile(configReader.rootPath() + "/server.properties", properties, function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                        var dir = configReader.rootPath() + "/servers/" + username;
+                        if (!fs.existsSync(dir)) {
+                            fs.mkdirSync(dir);
+                            //Copying all the files to the user server folder
+                            var serverFolder = path.join(configReader.rootPath() + '/servers/' + username);
+                            var copyServer = fs.createReadStream(configReader.rootPath() + '/serverVersions/server.jar').pipe(fs.createWriteStream(serverFolder + '/server.jar'));
+                            copyServer.on('finish', function () {
+                                var copyProperties = fs.createReadStream(configReader.rootPath() + '/server.properties').pipe(fs.createWriteStream(serverFolder + '/server.properties'));
+                                copyProperties.on('finish', function () {
+                                    var copyInfo = fs.createReadStream(configReader.rootPath() + '/servers/serverInfo.json').pipe(fs.createWriteStream(serverFolder + '/serverInfo.json'));
+                                    copyInfo.on('finish', function () {
+                                        fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                                    })
+                                });
+                            });
+
+                        }
+                    });
+                })
+            })
+        });
     } else {
-		var server_ver = 'server1112';
-		var setram = 256;
-		serversetting.createproperties(username, server_Id, setram, server_ver);
-		serversetting.createserver(username, server_Id, server_ver, true);
+        var serverInfoFile = configReader.rootPath() + '/servers/serverInfo.json'
+        jf.readFile(serverInfoFile, function (err, currentServerInfo) {
+            var serverInfo = currentServerInfo;
+            var port = serverInfo.port;
+            serverInfo.port = port + 1;
+            jf.writeFile(serverInfoFile, serverInfo, function (err) {
+                var properties = "#Minecraft server properties \n" +
+                    "#Thu Mar 23 20:49:11 CET 2017 \n" +
+                    "generator-settings= \n" +
+                    "force-gamemode=false \n" +
+                    "allow-nether=true \n" +
+                    "gamemode=0 \n" +
+                    "enable-query=false \n" +
+                    "player-idle-timeout=0 \n" +
+                    "difficulty=1 \n" +
+                    "spawn-monsters=true \n" +
+                    "op-permission-level=4 \n" +
+                    "announce-player-achievements=true \n" +
+                    "pvp=true \n" +
+                    "snooper-enabled=true \n" +
+                    "level-type=DEFAULT \n" +
+                    "hardcore=false \n" +
+                    "enable-command-block=false \n" +
+                    "max-players=20 \n" +
+                    "network-compression-threshold=256 \n" +
+                    "resource-pack-sha1= \n" +
+                    "max-world-size=29999984 \n" +
+                    'server-port=' + port + "\n" +
+                    "debug=false \n" +
+                    "server-ip= \n" +
+                    "spawn-npcs=true";
+
+                fs.writeFile(configReader.rootPath() + "/server.properties", properties, function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    var dir = configReader.rootPath() + "/servers/" + username;
+                    if (!fs.existsSync(dir)) {
+                        fs.mkdirSync(dir);
+                        //Copying all the files to the user server folder
+                        var serverFolder = path.join(configReader.rootPath() + '/servers/' + username);
+                        /*copy.one(configReader.rootPath() + '/serverVersions/server.jar', serverFolder, function (err, file) {
+                        });
+                        copy.one(configReader.rootPath() + '/server.properties', serverFolder, function (err, file) {
+                        });
+                        copy.one(configReader.rootPath() + '/servers/serverInfo.json', serverFolder, function (err, file) {
+                        });*/
+                        var copyServer = fs.createReadStream(configReader.rootPath() + '/serverVersions/server.jar').pipe(fs.createWriteStream(serverFolder + '/server.jar'));
+                        copyServer.on('finish', function () {
+                            var copyProperties = fs.createReadStream(configReader.rootPath() + '/server.properties').pipe(fs.createWriteStream(serverFolder + '/server.properties'));
+                            copyProperties.on('finish', function () {
+                                var copyInfo = fs.createReadStream(configReader.rootPath() + '/servers/serverInfo.json').pipe(fs.createWriteStream(serverFolder + '/serverInfo.json'));
+                                copyInfo.on('finish', function () {
+                                    fs.unlinkSync(configReader.rootPath() + "/server.properties");
+                                })
+                            });
+                        });
+                    }
+                });
+            })
+        })
     }
 }
