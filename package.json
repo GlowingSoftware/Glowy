@@ -5,15 +5,14 @@
   "main": "main.js",
   "dependencies": {
     "copy": "^0.3.0",
-    "ejs": "^2.5.6",
     "express": "^4.15.2",
-    "hashmap": "^2.0.6",
     "jsonfile": "^2.4.0",
     "mysql": "^2.13.0",
-    "nconf": "^0.8.4",
-    "simple-node-logger": "0.93.27",
-    "socket.io": "^1.7.3",
-    "socketio": "^1.0.0"
+    "ejs": "^2.5.6",
+    "socketio": "^1.0.0",
+    "hashmap":"^2.0.6",
+    "socket.io":"^1.7.3",
+    "simple-node-logger":"0.93.27"
   },
   "devDependencies": {},
   "scripts": {
