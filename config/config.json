@@ -4,7 +4,7 @@
     "enableRegister": true,
     "port": 8040,
     "mysql": {
-        "host": "localhost",
+        "host": "127.0.0.1",
         "user": "root",
         "password": "password",
         "database": "projects"
