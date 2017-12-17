@@ -6,12 +6,12 @@ exports.readConfig = function(){
     return obj;
 }
 exports.readServerInfo = function(name){
-    var path = path2.join(__dirname, '/servers/' + name + "/serverInfo.json");
+    var path = path2.join(__dirname, '/servers/' + name + '/serverInfo.json');
     var obj = jf.readFileSync(path);
     return obj;
 }
 exports.rootPath = function(){
     var root = __dirname;
-    console.log(root)
+    //console.log(root)
     return root;
 }
