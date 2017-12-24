@@ -12,7 +12,7 @@ var serversetting = require('../fileBuilders/server_setting')
 var startQueue = {};
 var config = configReader.readConfig();
 
-serv.listen(8083);
+serv.listen(8081);
 console.log("???");
 var mysqlSettings = {
     host: config.mysql.host,
