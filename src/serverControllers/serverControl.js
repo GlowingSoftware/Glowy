@@ -26,48 +26,53 @@ console.log("Server initialized");
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     socket.on('status', function (name, serverId) {
-		var servername = name + serverId;
+        var servername = name + serverId;
         var server = map.get(servername);
-		console.log("get status");
+        console.log("get status");
         if (server != null) {
             socket.emit("statusON"); //server status ON
-			//console.log("status on");
+            //console.log("status on");
         } else {
             socket.emit("statusOFF"); //server status OFF
-			//console.log("status off");
+            //console.log("status off");
         }
     });
     socket.on('startServer', function (name, serverId) {
-		var servername = name + serverId;
-		console.log(servername)
+        var servername = name + serverId;
+        console.log(servername)
         var server = map.get(servername);
-		if (serverId != null && servername == name + serverId){
-			if (server == null) {
-				var poth = configReader.rootPath + '/servers/' + name + "/" + servername;
-				var server_ver = configReader.readServerInfo(name + "/" + servername).server; //this is call out for server version
-				//nconf.argv().env({ lowerCase: true }).file({ file: 'servers/' + name + '/' + servername + '/serverInfo.json' });
-				//xmax = nconf.get('ram');
-				var serverInfoFile = configReader.rootPath() + '/servers/' + name + '/' + servername + '/serverInfo.json';
-				 jf.readFile(serverInfoFile, function (err, currentServerInfo) {
-					var serverInfo = currentServerInfo;
-					xmax = serverInfo.ram;
-				 });
-				var mc_server2 = exec('"java" -Xmx' + xmax + 'M -Xms' + xmin + 'M -Dcom.mojang.eula.agree=true -jar ' + server_ver + '.jar nogui', { cwd: path.resolve(process.cwd() + "/servers/" + name + "/" + servername) }, function(err, stdout, stderr) {
-                if(err){ console.log(err); socket.emit("statusOFF"); return; }   
-				});
-				map.set(servername, mc_server2);
-				socket.emit("statusON");
-				console.log("Starting server of " + name + serverId + " with " + xmax + " of ram");
-			}else{
-			 console.log("can not run server for " + name + serverId);
-			 map.remove(servername);
-			}
-        }else{
-		 console.log("server did not have a id for " + name);
-		 map.remove(servername);
-		}
+        if (serverId != null && servername == name + serverId) {
+            if (server == null) {
+                var poth = configReader.rootPath + '/servers/' + name + "/" + servername;
+                var server_info = configReader.readServerInfo(name + "/" + servername)
+                if (server_info) {
+                    var server_ver = server_info.server; //this is call out for server version
+                    //nconf.argv().env({ lowerCase: true }).file({ file: 'servers/' + name + '/' + servername + '/serverInfo.json' });
+                    //xmax = nconf.get('ram');
+                    var serverInfoFile = configReader.rootPath() + '/servers/' + name + '/' + servername + '/serverInfo.json';
+                    jf.readFile(serverInfoFile, function (err, currentServerInfo) {
+                        var serverInfo = currentServerInfo;
+                        xmax = serverInfo.ram;
+                    });
+                    var mc_server2 = exec('"java" -Xmx' + xmax + 'M -Xms' + xmin + 'M -Dcom.mojang.eula.agree=true -jar ' + server_ver + '.jar nogui', { cwd: path.resolve(process.cwd() + "/servers/" + name + "/" + servername) }, function (err, stdout, stderr) {
+                        if (err) { console.log(err); socket.emit("statusOFF"); return; }
+                    });
+                    map.set(servername, mc_server2);
+                    socket.emit("statusON");
+                    console.log("Starting server of " + name + serverId + " with " + xmax + " of ram");
+                } else {
+                    socket.emit("wrong");
+                }
+            } else {
+                console.log("can not run server for " + name + serverId);
+                map.remove(servername);
+            }
+        } else {
+            console.log("server did not have a id for " + name);
+            map.remove(servername);
+        }
     });
-	
+
 	/*    
 	socket.on('setram', function (name, ram) {
         var server = map.get(name);
@@ -88,10 +93,10 @@ io.sockets.on('connection', function (socket) {
         }
     });
 	*/
-	
+
     socket.on('command', function (name, serverId, cmd) {
-		var servername = name + serverId;
-		console.log(servername)
+        var servername = name + serverId;
+        console.log(servername)
         var server = map.get(servername);
         console.log("packet received")
         if (server != null) {
@@ -109,28 +114,28 @@ io.sockets.on('connection', function (socket) {
             }
         }
     });
-	
-	
-	
-	
-	
-	socket.on('controlstartup', function(name, serverId) {
-		var server = map.get(servername);
-		var servername = name + serverId;
+
+
+
+
+
+    socket.on('controlstartup', function (name, serverId) {
+        var server = map.get(servername);
+        var servername = name + serverId;
         serveroutput(servername);
-	});
-	
-	//control socket input and output
-	socket.on('getIP', function(name, serverId) {
+    });
+
+    //control socket input and output
+    socket.on('getIP', function (name, serverId) {
         var ip = getIP(name, serverId);
-        if (ip){
+        if (ip) {
             socket.emit("ip", ip);
         } else {
             socket.emit("wrong");
         }
     });
     socket.on('stopServer', function (name, serverId) {
-		var servername = name + serverId;
+        var servername = name + serverId;
         //Hashmap saves the variable name and the username
         var server = map.get(servername);
         if (server != null) {
@@ -141,7 +146,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit("statusOFF");
         }
     });
-	
+
     socket.on('stopAllServers', function () { //pararTodos means Stop All servers
         stopAllServers();
     });
@@ -161,13 +166,13 @@ io.sockets.on('connection', function (socket) {
             socket.emit("todos", mandar); //sending all the servers in a list
         }
     });
-	
-	function serveroutput(servername) {	
-	var server = map.get(servername);
-	server.stdout.on('data', function(data) { //Here is where the server output
-	socket.emit("serveroutput", data);
-	});
-	}
+
+    function serveroutput(servername) {
+        var server = map.get(servername);
+        server.stdout.on('data', function (data) { //Here is where the server output
+            socket.emit("serveroutput", data);
+        });
+    }
 });
 
 
@@ -204,10 +209,10 @@ function stopAllServers() {
 }
 
 function getIP(name, serverId) {
-	var servername = name + serverId;
+    var servername = name + serverId;
     var ip = configReader.readConfig();
     var port = configReader.readServerInfo(name + "/" + servername);
-    if (port){
+    if (port) {
         var ipWithPort = ip.ip + ":" + (port.port);
         return ipWithPort;
     } else {
