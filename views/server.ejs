@@ -1,96 +1,289 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<title>GlowstonePanel</title>
-	<link rel="stylesheet" type="text/css" href="css/estilos.css">
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	 crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	 crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+	
+    <title>Glowy Control Panel</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="">
+	
+    <link rel="apple-touch-icon" sizes="60x60" href="images/ico/apple-icon-60.png">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" type="text/css" href="bscss/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="fonts/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="fonts/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="css/extensions/pace.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="css/colors.css">
+    <link rel="stylesheet" type="text/css" href="css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="css/core/menu/menu-types/vertical-overlay-menu.css">
+    <link rel="stylesheet" type="text/css" href="css/core/colors/palette-gradient.css">
 	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-</head>
+	
+
+  </head>
+  <body data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns">
+      <!-- Navigation -->
+    <nav class="navbar navbar-expand-xl navbar-light fixed-top" style="background-color: #00ccff;">
+		<ul class="nav navbar-nav"> 
+              <li class="nav-item hidden-sm-down"><a class="nav-link nav-menu-main menu-toggle hidden-xs text-white"><i class="icon-menu5">         </i></a></li>
+              <li class="nav-item hidden-sm-down"><a href="#" class="nav-link nav-link-expand"><i class="ficon icon-expand2 text-white"></i></a></li>
+            </ul>
+      <div class="container">
+        <a class="navbar-brand text-white" href="/">Glowy Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link text-white" href="/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+              <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
+                <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
+                  <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
+                </div>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">Services</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+	  <div class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-light navbar-light" style="background-color: #33adff;"></div>
+    </nav>
+
+	
+
+    <!-- main menu-->
+    <div data-scroll-to-active="true" class="main-menu menu-fixed menu-light menu-accordion menu-shadow" style="background-color: #33adff;">
+      <!-- main menu header-->
+      <div class="main-menu-header">
+      </div>
+      <!-- / main menu header-->
+      <!-- main menu content-->
+      <div class="main-menu-content">
+        <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
+          <li class="nav-item text-white" style="background-color: #66c2ff;"><a class="text-white" href="" style="background-color: #4db8ff;"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Servers</span></a>
+            <ul class="menu-content" style="background-color: #66c2ff;">
+              <li onClick="setserverID(0)" style="background-color: #66c2ff;"><a onClick="setserverID(0)" href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">server 1</a>
+              </li>
+              <li onClick="setserverID(1)" class="active" style="background-color: #66c2ff;"><a onClick="setserverID(1)" href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">server 2</a>
+              </li>
+            </ul>
+          </li>
+		  <li class="active" style="background-color: #66c2ff;"><a href="Control" style="background-color: #4db8ff;"><i class="icon-paper text-white"></i><span class="menu-title text-white">Control</span></a>
+          </li>
+        </ul>
+      </div>
+      <!-- /main menu content-->
+      <!-- main menu footer-->
+      <!-- include includes/menu-footer-->
+      <!-- main menu footer-->
+    </div>
+    <!-- / main menu-->
+
+    <div class="app-content content container-fluid">
+	  <div class="header-navbar navbar navbar-with-menu navbar-fixed-top"></div>
+
+      <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body"><!-- Statistics -->
+<div class="row">
+<div class="col-xl-3 col-lg-6 col-xs-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="media">
+                    <div class="p-2 bg-pink white media-body">
+                        <h5>Server: <a id="status"></a></h5>
+                        <h5 class="text-bold-400">server-name</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-xs-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="media">
+                    <div class="p-2 bg-deep-orange white media-body">
+                        <h5>Players online</h5>
+                        <h5 class="text-bold-400">server-player-on</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-xs-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="media">
+                    <div class="p-2 bg-teal white media-body">
+                        <h5>Server IP:</h5>
+                        <h5 id="ip"><h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 
+<div class="row">
+    <div class="col-xl-4 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="earning-chart position-relative">
+                    <div class="chart-title position-absolute mt-2 ml-2">
+                        <h1 class="display-4">1000</h1>
+                        <span class="text-muted">how min new players join</span>
+                    </div>
+                    <canvas id="earning-chart" class="height-450 block"></canvas>
+                    <div class="chart-stats position-absolute position-bottom-0 position-right-0 mb-2 mr-3">
+                        </a> <span class="text-muted">Statistics for the <a href="#" class="primary darken-2">this month.</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <canvas id="posts-visits" class="height-400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 
 
-<body>
-	<header>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">GlowstonePanel</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="/">Home</a></li>
-						<li class="active"><a href="#">Server <span class="sr-only">(current)</span></a></li>
-						<li><a href="#">Files & Plugins</a></li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="#" id="who"></a>
-						</li>
-						<li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-					</ul>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</nav>
-	</header>
-	<h1 class="text-center">My Server</h1>
-	<div class="col-md-6 col-md-offset-3">
-		<h2 class="text-center">Info</h2>
-		<div class="row">
-			<div class="col-sm-4">
-				<h3>IP:</h3>
-			</div>
-			<div class="col-sm-4">
-				<h3 id="ip"></h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-4">
-				<h3>Status: </h3>
-			</div>
-			<div class="col-sm-4">
-				<h3 id="status"></h3>
-			</div>
-		</div>
-	</div>
-	<hr />
-	<div class="col-md-6 col-md-offset-3">
-		<h2 class="text-center">Server Control</h2>
-		<div class="row">
-			<div class="col-sm-4">
-				<button id="start" class="btn btn-success">Start the server</button>
-			</div>
-			<div class="col-sm-4">
-				<button id="stop" class="btn btn-danger">Stop the server</button>
-			</div>
-		</div>
-		<hr />
-		<div>
-			<h2 class="text-center">Commands</h2>
-			<form onsubmit="return false">
-				<div class="row">
-					<div class="form-group col-xs-6">
-						<input id="cc" class="form-control input-lg" type="text" placeholder="Type commands here..."></input>
-					</div>
-					<div class="form-group col-xs-6">
-						<button id="submit" class="btn btn-primary">Send</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-	<footer>
-		<p>@2017 GlowstonePanel</p>
-	</footer>
+<div class="row">
+    <div class="col-xl-8 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Players that Op</h4>
+                <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="reload"><i class="icon-reload"></i></a></li>
+                        <li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-block">
+                    <p class="m-0">showing who Op on the server</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-1">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Op by who</th>
+                                <th>Priority</th>
+                                <th>The total online percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-sm-12">
+        <div class="card bg-cyan">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                        
+                        </div>
+                        <div class="media-body white text-xs-right">
+                            <button id="start" class="btn btn-outline-light"><h3>Start the server</h3></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-teal">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body white text-xs-left">
+                            <button id="stop" class="btn btn-outline-light"><h3>Stop the server</h3></button>
+                        </div>
+                        <div class="media-right media-middle">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-deep-orange">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-left media-middle">
+						
+                        </div>
+                        <div class="media-body white text-xs-right">
+                            <button id="killserver" class="btn btn-outline-light"><h3> Kill the server</h3></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ projects table with monthly chart -->
+
+
+        </div>
+      </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+    <footer class="footer footer-static footer-light navbar-border fixed-bottom">
+      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2017 <a href="" target="_blank" class="text-bold-800 grey darken-2">Glowy panel </a></span></p>
+    </footer>
+
+     <!-- BEGIN VENDOR JS-->
+    <script src="js/core/libraries/jquery.min.js" type="text/javascript"></script>
+    <script src="js/ui/tether.min.js" type="text/javascript"></script>
+    <script src="js/core/libraries/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/ui/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src="js/ui/unison.min.js" type="text/javascript"></script>
+    <script src="js/ui/blockUI.min.js" type="text/javascript"></script>
+    <script src="js/ui/jquery.matchHeight-min.js" type="text/javascript"></script>
+    <script src="js/ui/screenfull.min.js" type="text/javascript"></script>
+    <script src="js/extensions/pace.min.js" type="text/javascript"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="js/charts/chart.min.js" type="text/javascript"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN ROBUST JS-->
+    <script src="js/core/app-menu.js" type="text/javascript"></script>
+    <script src="js/core/app.js" type="text/javascript"></script>
+    <!-- END ROBUST JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="js/scripts/pages/dashboard-2.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS-->
 
 	<script>
 		function checkCookie() {
@@ -100,7 +293,6 @@
 			}
 		}
 		checkCookie();
-
 		var timeQueue = 360000; //6 minutos
 		window.onbeforeunload = function () {
 			if (timeOut != null) {
@@ -108,24 +300,34 @@
 				document.getElementById("estado").innerHTML = "Offline";
 			}
 		};
-
+		
+        var ram = 256;
+		var serverId = getCookie("serverID");
 		var cookieName = document.cookie;
 		var name = getCookie("username");
 		document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
 		var socket = io();
-		this.socket = io.connect('http://localhost:8080');
+		this.socket = io.connect('http://localhost:8082');
 		var startButton = document.getElementById("start");
 		var stopButton = document.getElementById("stop");
 		var submit = document.getElementById("submit");
+		var submitram = document.getElementById("submitram");
+		console.log(serverId);
+		
+		
 		startButton.onclick = function () {
-			socket.emit('startServer', name);
+			socket.emit('startServer', name, serverId);
+			socket.emit('status', name, serverId);
 			document.getElementById("status").innerHTML = "Starting...";
 		}
+		
 		stopButton.onclick = function () {
-			socket.emit('stopServer', name);
+			socket.emit('stopServer', name, serverId);
 		}
-		socket.emit('status', name);
-		socket.emit('getIP', name);
+		
+		socket.emit('status', name, serverId);
+		socket.emit('getIP', name, serverId);
+		
 		socket.on('ip', function (ip) {
 			document.getElementById("ip").innerHTML = ip;
 		});
@@ -135,12 +337,14 @@
 		socket.on('statusOFF', function () {
 			document.getElementById("status").innerHTML = "Offline";
 		});
-		submit.onclick = function () {
-			console.log("epic")
-			var cc = document.getElementById("cc").value;
-			socket.emit('command', name, cc);
-			document.getElementById("cc").value = "";
+		
+		
+		function setserverID(ID){
+			document.cookie = "serverID=" + ID + ";path=/";
+			window.location.href = 'server';
 		}
+		
+		
 		function setCookie(cname, cvalue, exdays) {
 			var d = new Date();
 			d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -163,7 +367,5 @@
 			return "";
 		}
 	</script>
-
-</body>
-
+  </body>
 </html>

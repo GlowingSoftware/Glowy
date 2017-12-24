@@ -27,9 +27,6 @@ app.use('/images', express.static(__dirname + '/src/vendor/images'));
 	app.get('/', function(req,res){
     res.render('index');
 });
-app.get('/loader', function(req,res){
-    res.render('loader');
-});
 app.get('/register', function(req,res){
     res.render('register');
 });

@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8">
-	<title>GlowstonePanel</title>
+	<title>Glowy panel</title>
 	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -54,6 +54,7 @@
 						<input type="password" class="form-control" id="pwd">
 					</div>
 					<button id="submit" type="submit" class="btn btn-default">Submit</button>
+					<input type="text" name="server_Id"><br>
 				</form>
 			</div>
 		</div>
@@ -64,14 +65,15 @@
 </footer>
 <script>
 	var socket = io();
-	this.socket = io.connect('http://localhost:8081');
+	this.socket = io.connect('http://localhost:8083');
 	var submit = document.getElementById("submit");
 	submit.onclick = function () {
 		console.log("epic")
+		var serverId = 0;//document.getElementById("server_Id").value;
 		var username = document.getElementById("username").value;
 		var email = document.getElementById("email").value;
 		var password = document.getElementById("pwd").value
-		socket.emit('register', username, email, password);
+		socket.emit('register', username, email, password, serverId);
 	}
 	socket.emit('isRegisterOpened');
 	socket.on('isRegisterOpened', function (registerBoolean) {

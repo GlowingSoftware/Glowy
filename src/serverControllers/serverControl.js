@@ -123,7 +123,11 @@ io.sockets.on('connection', function (socket) {
 	//control socket input and output
 	socket.on('getIP', function(name, serverId) {
         var ip = getIP(name, serverId);
-        socket.emit("ip", ip);
+        if (ip){
+            socket.emit("ip", ip);
+        } else {
+            socket.emit("wrong");
+        }
     });
     socket.on('stopServer', function (name, serverId) {
 		var servername = name + serverId;
@@ -203,6 +207,10 @@ function getIP(name, serverId) {
 	var servername = name + serverId;
     var ip = configReader.readConfig();
     var port = configReader.readServerInfo(name + "/" + servername);
-    var ipWithPort = ip.ip + ":" + (port.port);
-    return ipWithPort;
+    if (port){
+        var ipWithPort = ip.ip + ":" + (port.port);
+        return ipWithPort;
+    } else {
+        return null;
+    }
 }
