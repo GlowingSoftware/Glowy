@@ -36,6 +36,9 @@ app.get('/login', function(req,res){
 app.get('/Control', function(req,res){
     res.render('Control');
 });
+app.get('/panel', function(req,res){
+    res.render('panel');
+});
 app.get('/server', function(req,res){
     res.render('server');
 });
