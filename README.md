@@ -22,7 +22,7 @@ I would like to get some feedback, [so you can tell me in the Spigot thread your
 
 4 - Import the sql.sql file in your MySQL database
 
-5 - Open config.json and edit it as you want
+5 - Copy `config.json.template` and rename it to `config.json`. Then edit it as you want
 
 6 - Put the jar file of the server you prefer in the root folder. That jar has to be named server.jar and it will be used to create all the servers
 
