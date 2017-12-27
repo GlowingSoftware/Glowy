@@ -77,7 +77,7 @@
 	}
 	socket.on('loginSucess', function () {
 		setCookie("username", username, 2)
-		window.location.href = 'server';
+		window.location.href = 'panel';
 	});
 	socket.on('isRegisterOpened', function (registerBoolean) {
 		if (registerBoolean == false){

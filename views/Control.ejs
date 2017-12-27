@@ -11,6 +11,8 @@
 
   <title>Glowy Control Panel</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
   <link rel="shortcut icon" type="image/x-icon" href="">
 
   <link rel="apple-touch-icon" sizes="60x60" href="images/ico/apple-icon-60.png">
@@ -53,13 +55,13 @@
                 <span class="sr-only">(current)</span>
               </a>
           </li>
+          <li class="nav-item">
+              <a class="nav-link text-white" href="#">Services</a>
+            </li>
           <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
             <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
               <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Services</a>
           </li>
         </ul>
       </div>
@@ -80,19 +82,21 @@
     <!-- main menu content-->
     <div class="main-menu-content">
       <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-        <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
+        <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-tasks"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
           <ul class="menu-content" style="background-color: #66c2ff;">
-            <li style="background-color: #66c2ff;"><a href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Add one...</a>
+            <li style="background-color: #66c2ff;"><a href="panel" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Overview</a>
             </li>
-            <li onClick="setserverID(0)" style="background-color: #66c2ff;"><a onClick="setserverID(0)" href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">server 1</a>
-            </li>
-            <li onClick="setserverID(1)" style="background-color: #66c2ff;"><a onClick="setserverID(1)" href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">server 2</a>
-            </li>
+            <div id="servers">
+              <div v-for="(server, index) in servers">
+                <li v-on:click="setServerId(server)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server)" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Server {{ index }}</a>
+                </li>
+              </div>
+            </div>
           </ul>
         </li>
-        <li style="background-color: #66c2ff;"><a href="server" style="background-color: #4db8ff;"><i class="icon-paper text-white"></i><span class="menu-title text-white">Dashboard</span></a></li>
-          <li class="active" style="background-color: #66c2ff;"><a href="#" style="background-color: #4db8ff;"><i class="icon-paper text-white"></i><span class="menu-title text-white">Control</span></a>
-          </li>
+        <li style="background-color: #66c2ff;"><a href="server" style="background-color: #4db8ff;"><i class="icon-dashboard text-white"></i><span class="menu-title text-white">Dashboard</span></a></li>
+        <li class="active" style="background-color: #66c2ff;"><a href="#" style="background-color: #4db8ff;"><i class="icon-terminal text-white"></i><span class="menu-title text-white">Control</span></a>
+        </li>
       </ul>
     </div>
   </div>
@@ -158,11 +162,33 @@
     var serverId = getCookie("serverID");
     var cookieName = document.cookie;
     var name = getCookie("username");
+    var allIdArray = [];
     document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
     var socket = io();
     this.socket = io.connect('http://localhost:8082');
     var submit = document.getElementById("submit");
 
+    socket.emit('getNumberOfServersByName', name);
+    socket.on('numberOfServersByName', function (maxId) {
+      for (i = 0; i < maxId; i++) {
+        allIdArray[i] = i;
+        console.log("h")
+      }
+      console.log(allIdArray)
+      var servers = new Vue({
+        el: '#servers',
+        data: {
+          servers: allIdArray
+        },
+        methods: {
+          setServerId: function (id) {
+            console.log("fg")
+            document.cookie = "serverID=" + id + ";path=/";
+            window.location.href = 'server';
+          }
+        }
+      })
+    })
 
     socket.emit('status', name, serverId);
 

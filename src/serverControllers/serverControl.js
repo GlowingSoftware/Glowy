@@ -150,6 +150,10 @@ io.sockets.on('connection', function (socket) {
     socket.on('stopAllServers', function () { //pararTodos means Stop All servers
         stopAllServers();
     });
+    socket.on('getNumberOfServersByName', function (name) { //pararTodos means Stop All servers
+        console.log(getNumberOfServersByName(name))
+        socket.emit('numberOfServersByName', getNumberOfServersByName(name));
+    });
     socket.on('allServers', function () { //see all the servers
         var todo1 = map.keys();
         var count1 = 0;
@@ -177,7 +181,15 @@ io.sockets.on('connection', function (socket) {
 
 
 
-
+function getNumberOfServersByName(name) {
+    var id = 0;
+    var poth = './servers/' + name + "/" + name + id;
+    while (fs.existsSync(poth) == true) {
+        id++;
+        poth = './servers/' + name + "/" + name + id;
+    }
+    return id;
+}
 //Stop the last server
 function stopLastServer() {
     var todo = map.keys();

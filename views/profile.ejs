@@ -55,13 +55,13 @@
                 <span class="sr-only">(current)</span>
               </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Services</a>
-                    </li>
                     <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
-                        <div class="dropdown-menu dropdown-menu-right"><a href="profile" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
+                        <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
                             <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Services</a>
                     </li>
                 </ul>
             </div>
@@ -82,10 +82,11 @@
             <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
                 <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-tasks"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
                     <ul class="menu-content" style="background-color: #66c2ff;">
+                        <li class="active" style="background-color: #66c2ff;"><a href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Add one...</a>
                         </li>
                         <div id="servers">
                             <div v-for="(server, index) in servers">
-                                <li class="active" v-on:click="setServerId(server)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server)" data-i18n="nav.dash.main" class="menu-item text-white"
+                                <li v-on:click="setServerId(server)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server)"  data-i18n="nav.dash.main" class="menu-item text-white"
                                         style="background-color: #66c2ff;">Server {{ index }}</a>
                                 </li>
                             </div>
@@ -105,8 +106,8 @@
         <div class="header-navbar navbar navbar-with-menu navbar-fixed-top"></div>
 
         <div class="content-wrapper">
-            <h1>WHOOPS, WE ARE WORKING HERE</h1>
-            <p> You haven't seen anything, just click on a server in the list</p>
+            <h1>PROFILES ARE COMING SOON</h1>
+            <p>As soon as possible ^^</p>
         </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->

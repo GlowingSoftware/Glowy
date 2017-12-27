@@ -11,8 +11,6 @@
 
     <title>Glowy Control Panel</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
     <link rel="shortcut icon" type="image/x-icon" href="">
 
     <link rel="apple-touch-icon" sizes="60x60" href="images/ico/apple-icon-60.png">
@@ -52,16 +50,16 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
                         <a class="nav-link text-white" href="/">Home
-                    <span class="sr-only">(current)</span>
-                    </a>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Services</a>
-                        </li>
+                <span class="sr-only">(current)</span>
+              </a>
                     </li>
                     <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
-                        <div class="dropdown-menu dropdown-menu-right"><a href="profile" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
+                        <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
                             <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Services</a>
                     </li>
                 </ul>
             </div>
@@ -80,21 +78,17 @@
         <!-- main menu content-->
         <div class="main-menu-content">
             <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-                <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-tasks"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
+                <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
                     <ul class="menu-content" style="background-color: #66c2ff;">
-                            <li style="background-color: #66c2ff;"><a href="panel" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Overview</a>
+                        <li class="active" style="background-color: #66c2ff;"><a href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Add one...</a>
                         </li>
-                        <div id="servers">
-                            <div v-for="(server, index) in servers">
-                                <li v-on:click="setServerId(server)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server)" data-i18n="nav.dash.main" class="menu-item text-white"
-                                        style="background-color: #66c2ff;">Server {{ index }}</a>
-                                </li>
-                            </div>
-                        </div>
+                        <li onClick="setserverID(1)" style="background-color: #66c2ff;"><a onClick="setserverID(1)" href="server" data-i18n="nav.dash.main" class="menu-item text-white"
+                                style="background-color: #66c2ff;">server 1</a>
+                        </li>
+                        <li onClick="setserverID(2)" style="background-color: #66c2ff;"><a onClick="setserverID(2)" href="server" data-i18n="nav.dash.main" class="menu-item text-white"
+                                style="background-color: #66c2ff;">server 2</a>
+                        </li>
                     </ul>
-                </li>
-                <li class="active" style="background-color: #66c2ff;"><a href="#" style="background-color: #4db8ff;"><i class="icon-dashboard text-white"></i><span class="menu-title text-white">Dashboard</span></a></li>
-                <li style="background-color: #66c2ff;"><a href="control" style="background-color: #4db8ff;"><i class="icon-terminal text-white"></i><span class="menu-title text-white">Control</span></a>
                 </li>
             </ul>
         </div>
@@ -113,13 +107,13 @@
             </div>
             <div class="content-body">
                 <!-- Statistics -->
-                <div class="row" id="server">
+                <div class="row">
                     <div class="col-xl-3 col-lg-6 col-xs-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="media">
                                     <div class="p-2 bg-pink white media-body">
-                                        <h5>Server: <a id="status">{{ status }}</a></h5>
+                                        <h5>Server: <a id="status"></a></h5>
                                         <h5 class="text-bold-400">server-name</h5>
                                     </div>
                                 </div>
@@ -144,8 +138,8 @@
                                 <div class="media">
                                     <div class="p-2 bg-teal white media-body">
                                         <h5>Server IP:</h5>
-                                        <h5>{{ ip }}
-                                        </h5>
+                                        <h5 id="ip">
+                                            <h5>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +267,7 @@
 
 
     <footer class="footer footer-static footer-light navbar-border fixed-bottom">
-        <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2018 <a href="" target="_blank" class="text-bold-800 grey darken-2">Glowy panel </a></span></p>
+        <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2017 <a href="" target="_blank" class="text-bold-800 grey darken-2">Glowy panel </a></span></p>
     </footer>
 
     <!-- BEGIN VENDOR JS-->
@@ -316,7 +310,6 @@
 
         var ram = 256;
         var serverId = getCookie("serverID");
-        var allIdArray = [];
         var cookieName = document.cookie;
         var name = getCookie("username");
         document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
@@ -328,75 +321,28 @@
         var submitram = document.getElementById("submitram");
         console.log(serverId);
 
-        socket.emit('getNumberOfServersByName', name);
-        socket.on('numberOfServersByName', function (maxId) {
-            for (i = 0; i < maxId; i++) {
-                allIdArray[i] = i;
-                console.log("h")
-            }
-            console.log(allIdArray)
-            var servers = new Vue({
-                el: '#servers',
-                data: {
-                    servers: allIdArray
-                },
-                methods: {
-                    setServerId: function (id) {
-                        console.log("fg")
-                        document.cookie = "serverID=" + id + ";path=/";
-                        window.location.href = 'server';
-                    }
-                }
-            })
-        })
 
         startButton.onclick = function () {
             socket.emit('startServer', name, serverId);
             socket.emit('status', name, serverId);
-            var status = new Vue({
-                el: '#status',
-                data: {
-                    status: "Starting..."
-                }
-            })
+            document.getElementById("status").innerHTML = "Starting...";
         }
 
         stopButton.onclick = function () {
             socket.emit('stopServer', name, serverId);
-            var status = new Vue({
-                el: '#status',
-                data: {
-                    status: "Offline"
-                }
-            })
         }
 
         socket.emit('status', name, serverId);
         socket.emit('getIP', name, serverId);
 
         socket.on('ip', function (ip) {
-            var server = new Vue({
-                el: '#server',
-                data: {
-                    ip
-                }
-            })
+            document.getElementById("ip").innerHTML = ip;
         });
         socket.on('statusON', function () {
-            var status = new Vue({
-                el: '#status',
-                data: {
-                    status: "Online"
-                }
-            })
+            document.getElementById("status").innerHTML = "Online";
         });
         socket.on('statusOFF', function () {
-            var status = new Vue({
-                el: '#status',
-                data: {
-                    status: "Offline"
-                }
-            })
+            document.getElementById("status").innerHTML = "Offline";
         });
 
 
