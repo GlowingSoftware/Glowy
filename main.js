@@ -45,6 +45,9 @@ app.get('/server', function(req,res){
 app.get('/serverbulder', function(req,res){
     res.render('serverbulder');
 });
+app.get('/profile', function(req,res){
+    res.render('profile');
+});
 app.get('/logout', function(req,res){
     res.render('logout');
 });
