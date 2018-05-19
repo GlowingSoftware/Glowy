@@ -18,7 +18,7 @@ I would like to get some feedback, [so you can tell me in the Spigot thread your
 ### Ubuntu
 
 1 - Glowy needs the power of NodeJS to work. So if you did not install it before, run this command to download the installer:
-```curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -```
+`curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -`
 And then run this command to install NodeJS
 ```sudo apt-get install -y nodejs```
 
