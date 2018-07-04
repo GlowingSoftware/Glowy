@@ -59,10 +59,8 @@
                         </li>
                     </li>
                     <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <!-- <a href="profile" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a> -->
-                            <!-- <div class="dropdown-divider"></div> -->
-                            <a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
+                        <div class="dropdown-menu dropdown-menu-right"><a href="profile" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
+                            <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -122,7 +120,7 @@
                                 <div class="media">
                                     <div class="p-2 bg-pink white media-body">
                                         <h5>Server: <a id="status">{{ status }}</a></h5>
-                                        <h5 class="text-bold-400">server-name</h5>
+                                        <h5 class="text-bold-400"> {{ info.name }} </h5>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +144,7 @@
                                 <div class="media">
                                     <div class="p-2 bg-teal white media-body">
                                         <h5>Server IP:</h5>
-                                        <h5>{{ ip }}
+                                        <h5>{{ info.ip }}
                                         </h5>
                                     </div>
                                 </div>
@@ -374,13 +372,13 @@
         }
 
         socket.emit('status', name, serverId);
-        socket.emit('getIP', name, serverId);
-
-        socket.on('ip', function (ip) {
+        socket.emit('GetServerInfo', name, serverId);
+        
+        socket.on('ServerInfo', function (info) {
             var server = new Vue({
                 el: '#server',
                 data: {
-                    ip
+                    info
                 }
             })
         });

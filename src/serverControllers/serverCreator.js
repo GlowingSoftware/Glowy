@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
 				//here we need to call a new dir to be build for the new acc.
 				//we need to look if this acc can edit the amout of servers it has and ram for each one.
                 //createServer(username, serverId) <---- this is being move to ServerSetupCreator.js
-                createServer(username, serverId)
+                createServer(username, 0)
             } else {
                 socket.emit("register", false)
             }

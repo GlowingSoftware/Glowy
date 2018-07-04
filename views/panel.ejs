@@ -12,7 +12,6 @@
     <title>Glowy Control Panel</title>
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
     <link rel="shortcut icon" type="image/x-icon" href="">
 
     <link rel="apple-touch-icon" sizes="60x60" href="images/ico/apple-icon-60.png">
@@ -55,12 +54,13 @@
                 <span class="sr-only">(current)</span>
               </a>
                     </li>
+                    <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
+                        <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item"><i class="icon-head"></i> Edit Profile</a>
+                            <div class="dropdown-divider"></div><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Services</a>
-                    </li>
-                    <li class="dropdown dropdown-user nav-item"><a data-toggle="dropdown" class="nav-link text-white" id="who"></a>
-                        <div class="dropdown-menu dropdown-menu-right"><a href="logout" class="dropdown-item"><i class="icon-power3"></i> Logout</a>
-                        </div>
                     </li>
                 </ul>
             </div>
@@ -79,13 +79,14 @@
         <!-- main menu content-->
         <div class="main-menu-content">
             <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-                <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-tasks"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
+                <li class="nav-item text-white" style="background-color: #34ADFF;"><a class="text-white" href="" style="background-color: #34ADFF;"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title text-white" >Products</span></a>
                     <ul class="menu-content" style="background-color: #66c2ff;">
+                        <li class="active" style="background-color: #66c2ff;"><a href="server" data-i18n="nav.dash.main" class="menu-item text-white" style="background-color: #66c2ff;">Add one...</a>
                         </li>
-                        <div id="servers">
-                            <div v-for="(server, index) in servers">
-                                <li class="active" v-on:click="setServerId(server)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server)" data-i18n="nav.dash.main" class="menu-item text-white"
-                                        style="background-color: #66c2ff;">Server {{ index }}</a>
+                        <div id="ServersList1">
+                            <div v-for="server in info" >
+                                <li v-on:click="setServerId(server.id)" style="background-color: #66c2ff;"><a v-on:click="setServerId(server.id)" data-i18n="nav.dash.main" class="menu-item text-white"
+                                        style="background-color: #66c2ff;">Server {{ server.name }}</a>
                                 </li>
                             </div>
                         </div>
@@ -104,15 +105,93 @@
         <div class="header-navbar navbar navbar-with-menu navbar-fixed-top"></div>
 
         <div class="content-wrapper">
-            <h1>WHOOPS, WE ARE WORKING HERE</h1>
-            <p> You haven't seen anything, just click on a server in the list</p>
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+                <!-- 
+<div class="row">
+    <div class="col-xl-4 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="earning-chart position-relative">
+                    <div class="chart-title position-absolute mt-2 ml-2">
+                        <h1 class="display-4">1000</h1>
+                        <span class="text-muted">how min new players join</span>
+                    </div>
+                    <canvas id="earning-chart" class="height-450 block"></canvas>
+                    <div class="chart-stats position-absolute position-bottom-0 position-right-0 mb-2 mr-3">
+                        </a> <span class="text-muted">Statistics for the <a href="#" class="primary darken-2">this month.</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <canvas id="posts-visits" class="height-400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+
+                <div class="row">
+                    <div class="col-xl-8 col-lg-12">
+                        <div class="card">
+                            <div class="card-header" >
+                                <h4 class="card-title">Servers</h4>
+                                <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="reload"><i class="icon-reload"></i></a></li>
+                                        <li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-block">
+                                    <p class="m-0">Showing your servers</p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-1">
+                                        <thead>
+                                            <tr>
+                                                <th>Server name</th>
+                                                <th>Status</th>
+                                                <th>IP</th>
+                                                <th>Priority</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ServersList2">
+                                            <tr v-for="server in info" >
+                                                <td> {{ server.name }}</td>
+                                                <td>Smith</td> 
+                                                <td> {{ server.ip }} </td>
+                                                <td>Free</td>
+                                              </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ projects table with monthly chart -->
+
+
+            </div>
         </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
 
     <footer class="footer footer-static footer-light navbar-border fixed-bottom">
-        <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2018 <a href="" target="_blank" class="text-bold-800 grey darken-2">Glowy panel </a></span></p>
+        <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2017 <a href="" target="_blank" class="text-bold-800 grey darken-2">Glowy panel </a></span></p>
     </footer>
 
     <!-- BEGIN VENDOR JS-->
@@ -134,6 +213,7 @@
     <script src="js/core/app.js" type="text/javascript"></script>
     <!-- END ROBUST JS-->
     <!-- BEGIN PAGE LEVEL JS-->
+    <script src="js/scripts/pages/dashboard-2.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
 
     <script>
@@ -151,17 +231,45 @@
                 document.getElementById("estado").innerHTML = "Offline";
             }
         };
-        var allIdArray = [];
+
         var ram = 256;
+        var allIdArray = [];
         var serverId = getCookie("serverID");
         var cookieName = document.cookie;
         var name = getCookie("username");
         document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
         var socket = io();
         this.socket = io.connect('http://localhost:8082');
+        var startButton = document.getElementById("start");
+        var stopButton = document.getElementById("stop");
         var submit = document.getElementById("submit");
         var submitram = document.getElementById("submitram");
+        console.log(serverId);
 
+        socket.emit('GetServersInfo', name);
+
+        socket.on("ServersInfo", function(info){
+            console.log(info)
+            var serversList1 = new Vue({
+                el: '#ServersList1',
+                data: {
+                    info
+                },
+                methods: {
+                    setServerId: function (id) {
+                        console.log("fg")
+                        document.cookie = "serverID=" + id + ";path=/";
+                        window.location.href = 'server';
+                    }
+                }
+            })
+            var serversList2 = new Vue({
+                el: '#ServersList2',
+                data: {
+                    info
+                }
+            })
+        });
         socket.emit('getNumberOfServersByName', name);
         socket.on('numberOfServersByName', function (maxId) {
             for (i = 0; i < maxId; i++) {
@@ -176,15 +284,18 @@
                 },
                 methods: {
                     setServerId: function (id) {
+                        console.log("fg")
                         document.cookie = "serverID=" + id + ";path=/";
                         window.location.href = 'server';
                     }
                 }
             })
         })
+        function setserverID(ID) {
+            document.cookie = "serverID=" + ID + ";path=/";
+            window.location.href = 'server';
+        }
 
-        socket.emit('status', name, serverId);
-        socket.emit('getIP', name, serverId);
 
         function setCookie(cname, cvalue, exdays) {
             var d = new Date();

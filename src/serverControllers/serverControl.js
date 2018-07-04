@@ -37,6 +37,14 @@ io.sockets.on('connection', function (socket) {
             //console.log("status off");
         }
     });
+    socket.on('GetServersInfo', function (name) {
+        var info = getServersInfoByName(name)
+        socket.emit("ServersInfo", info);
+    })
+    socket.on('GetServerInfo', function (name, id) {
+        var info = getServerInfoByName(name, id)
+        socket.emit("ServerInfo", info);
+    })
     socket.on('startServer', function (name, serverId) {
         var servername = name + serverId;
         console.log(servername)
@@ -190,6 +198,27 @@ function getNumberOfServersByName(name) {
     }
     return id;
 }
+function getServersInfoByName(name) {
+    var numberOfServers = getNumberOfServersByName(name) - 1
+    var serversInfo = [];
+    for (i = 0; i <= numberOfServers; i++) {
+        var serverInfo = {
+            id: i,
+            ip: getIP(name, i),
+            name: getServerName(name, i)
+        };
+        serversInfo.push(serverInfo)
+    }
+    return serversInfo;
+}
+function getServerInfoByName(name, serverId) {
+    var serverInfo = {
+        id: serverId,
+        ip: getIP(name, serverId),
+        name: getServerName(name, serverId)
+    };
+    return serverInfo;
+}
 //Stop the last server
 function stopLastServer() {
     var todo = map.keys();
@@ -230,4 +259,8 @@ function getIP(name, serverId) {
     } else {
         return null;
     }
+}
+function getServerName(name, serverId) {
+    var info = configReader.readServerInfo(name + "/" + name + serverId);
+    return info.servername;
 }
