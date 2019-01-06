@@ -12,7 +12,7 @@ var serversetting = require('../fileBuilders/server_setting')
 var startQueue = {};
 var config = configReader.readConfig();
 
-serv.listen(8081);
+serv.listen(8083);
 console.log("???");
 var mysqlSettings = {
     host: config.mysql.host,
@@ -41,6 +41,7 @@ io.sockets.on('connection', function (socket) {
 				//here we need to call a new dir to be build for the new acc.
 				//we need to look if this acc can edit the amout of servers it has and ram for each one.
                 //createServer(username, serverId) <---- this is being move to ServerSetupCreator.js
+                createServer(username, 0)
             } else {
                 socket.emit("register", false)
             }
@@ -63,15 +64,17 @@ io.sockets.on('connection', function (socket) {
 function createServer(username, server_Id) {
     if (!fs.existsSync(configReader.rootPath() + "/servers/serverInfo.json")) {
 		var server_ver = 'server1112';
-		var setram = 256;
+        var setram = 256;
+        console.log("1")
 		serversetting.createServerInfo();
-		serversetting.createproperties(username, server_Id, setram, server_ver);
+		serversetting.createproperties(username, server_Id, setram, server_ver, true);
 		serversetting.createserver(username, server_Id, server_ver, true); //(username, server_Id, server_ver)
 		
     } else {
+        console.log("2")
 		var server_ver = 'server1112';
 		var setram = 256;
-		serversetting.createproperties(username, server_Id, setram, server_ver);
+		serversetting.createproperties(username, server_Id, setram, server_ver, true);
 		serversetting.createserver(username, server_Id, server_ver, true);
     }
 }

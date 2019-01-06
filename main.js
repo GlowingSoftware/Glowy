@@ -27,9 +27,6 @@ app.use('/images', express.static(__dirname + '/src/vendor/images'));
 	app.get('/', function(req,res){
     res.render('index');
 });
-app.get('/loader', function(req,res){
-    res.render('loader');
-});
 app.get('/register', function(req,res){
     res.render('register');
 });
@@ -39,11 +36,17 @@ app.get('/login', function(req,res){
 app.get('/Control', function(req,res){
     res.render('Control');
 });
+app.get('/panel', function(req,res){
+    res.render('panel');
+});
 app.get('/server', function(req,res){
     res.render('server');
 });
 app.get('/serverbulder', function(req,res){
     res.render('serverbulder');
+});
+app.get('/profile', function(req,res){
+    res.render('profile');
 });
 app.get('/logout', function(req,res){
     res.render('logout');

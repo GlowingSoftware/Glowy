@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>GlowstonePanel</title>
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	 crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	 crossorigin="anonymous">
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+</head>
+
+
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">GlowstonePanel</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+						<li class="active"><a href="#">Server <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Files & Plugins</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#" id="who"></a>
+						</li>
+						<li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+	<h1 class="text-center">My Server</h1>
+	<div class="col-md-6 col-md-offset-3">
+		<h2 class="text-center">Info</h2>
+		<div class="row">
+			<div class="col-sm-4">
+				<h3>IP:</h3>
+			</div>
+			<div class="col-sm-4">
+				<h3 id="ip"></h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<h3>Status: </h3>
+			</div>
+			<div class="col-sm-4">
+				<h3 id="status"></h3>
+			</div>
+		</div>
+	</div>
+	<hr />
+	<div class="col-md-6 col-md-offset-3">
+		<h2 class="text-center">Server Control</h2>
+		<div class="row">
+			<div class="col-sm-4">
+				<button id="start" class="btn btn-success">Start the server</button>
+			</div>
+			<div class="col-sm-4">
+				<button id="stop" class="btn btn-danger">Stop the server</button>
+			</div>
+		</div>
+		<hr />
+		<div>
+			<h2 class="text-center">Commands</h2>
+			<form onsubmit="return false">
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<input id="cc" class="form-control input-lg" type="text" placeholder="Type commands here..."></input>
+					</div>
+					<div class="form-group col-xs-6">
+						<button id="submit" class="btn btn-primary">Send</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<footer>
+		<p>@2017 GlowstonePanel</p>
+	</footer>
+
+	<script>
+		function checkCookie() {
+			var username = getCookie("username");
+			if (username == "") {
+				window.location.href = 'login';
+			}
+		}
+		checkCookie();
+
+		var timeQueue = 360000; //6 minutos
+		window.onbeforeunload = function () {
+			if (timeOut != null) {
+				clearTimeout(timeOut);
+				document.getElementById("estado").innerHTML = "Offline";
+			}
+		};
+
+		var cookieName = document.cookie;
+		var name = getCookie("username");
+		document.getElementById("who").innerHTML = '<span class="glyphicon glyphicon-user"></span>' + name;
+		var socket = io();
+		this.socket = io.connect('http://localhost:8080');
+		var startButton = document.getElementById("start");
+		var stopButton = document.getElementById("stop");
+		var submit = document.getElementById("submit");
+		startButton.onclick = function () {
+			socket.emit('startServer', name);
+			document.getElementById("status").innerHTML = "Starting...";
+		}
+		stopButton.onclick = function () {
+			socket.emit('stopServer', name);
+		}
+		socket.emit('status', name);
+		socket.emit('getIP', name);
+		socket.on('ip', function (ip) {
+			document.getElementById("ip").innerHTML = ip;
+		});
+		socket.on('statusON', function () {
+			document.getElementById("status").innerHTML = "Online";
+		});
+		socket.on('statusOFF', function () {
+			document.getElementById("status").innerHTML = "Offline";
+		});
+		submit.onclick = function () {
+			console.log("epic")
+			var cc = document.getElementById("cc").value;
+			socket.emit('command', name, cc);
+			document.getElementById("cc").value = "";
+		}
+		function setCookie(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+			var expires = "expires=" + d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+	</script>
+
+</body>
+
+</html>

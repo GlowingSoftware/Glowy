@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -65,7 +65,7 @@
 </footer>
 <script>
 	var socket = io();
-	this.socket = io.connect('http://localhost:8081');
+	this.socket = io.connect('http://localhost:8083');
 	var submit = document.getElementById("submit");
 	var username;
 	socket.emit('isRegisterOpened');
@@ -77,7 +77,7 @@
 	}
 	socket.on('loginSucess', function () {
 		setCookie("username", username, 2)
-		window.location.href = 'server';
+		window.location.href = 'panel';
 	});
 	socket.on('isRegisterOpened', function (registerBoolean) {
 		if (registerBoolean == false){
@@ -90,6 +90,7 @@
 		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 		var expires = "expires=" + d.toUTCString();
 		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		document.cookie = "serverID=0;path=/";
 	}
 
 </script>
